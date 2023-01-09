@@ -16,7 +16,9 @@ export function TodoCard({
     searchValue,
     setSearchValue, 
     completarTodos,
-    eliminarTodos
+    eliminarTodos, 
+    loading,
+    error
 }) {
 
     return (
@@ -37,6 +39,11 @@ export function TodoCard({
                     />
 
                     <TodoList>
+                        {error && <p>Estamos cargando, espera por favor...</p>}
+                        {loading && <p>Estamos cargando, espera por favor...</p>}
+                        {(!loading && !todos.length) && <p>Crea tu primer tarea</p>}
+                        
+
                         {todos.map(({id, text, completed}) => {
                             return <TodoItem   
                                     key={id} 
@@ -46,6 +53,7 @@ export function TodoCard({
                                     eliminarTodos={eliminarTodos}
                                     />
                         })}
+
                     </TodoList>
                 </>
 

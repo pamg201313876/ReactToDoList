@@ -1,5 +1,6 @@
 import { TodoCard } from './Components/TodoCard'
 import * as React from 'react';
+import useLocalStorage from './Hooks/useLocalStorage'
 
 // const defaultTodos = [
 //   { id: 1, text: 'Encender la computadora', completed: false },
@@ -9,21 +10,14 @@ import * as React from 'react';
 // ];
 
 
-function App() {
+function App() {  
 
-  var localStorageTodos = localStorage.getItem('TODOS_V1');
-  let parsedTodos;
+  const [todos, 
+        saveTodos, 
+        loading,
+        error   
+   ] = useLocalStorage('TODOS_V1',[]);
 
-  if(!localStorageTodos){ 
-    localStorage.setItem('TODOS_V1',JSON.stringify([]));
-    localStorageTodos =[];
-  } else {
-    parsedTodos = JSON.parse(localStorageTodos);
-  }
-
-
-
-  const [todos, setTodos] = React.useState(parsedTodos);
   const [searchValue, setSearchValue] = React.useState('');
   const completedTodos = todos.filter(todo => todo.completed).length;
   const totalTodos = todos.length;
@@ -35,14 +29,6 @@ function App() {
   } else {
     todosFiltrados = todos;
   }
-
-
-  const saveTodos = (newTodos) => {
-    const stringifiedTodos = JSON.stringify(newTodos);
-    localStorage.setItem('TODOS_V1', stringifiedTodos);
-    setTodos(newTodos);
-  }
-
 
   const eliminarTodos = (todoText) => {
     //const newTodos = todos.filter(todo => todo.text !== todoText);
@@ -65,10 +51,12 @@ function App() {
     saveTodos(newTodos);
   }
 
+
   return (
     <TodoCard
-      todos={todosFiltrados}
-      setTodos={setTodos}
+      error={error}
+      loading={loading}
+      todos={todosFiltrados}      
       searchValue={searchValue}
       setSearchValue={setSearchValue}
       completados={completedTodos}
