@@ -7,62 +7,64 @@ import { TodoSearch } from './TodoSearch'
 import { TodoList } from './TodoList';
 import { TodoItem } from './TodoItem';
 import { TodoCounter } from './TodoCounter';
+import { TodoContext } from './TodoContext';
+import { TodoModal } from './TodoModal'
 
 
-export function TodoCard({
-    completados,
-    total,
-    todos,
-    searchValue,
-    setSearchValue, 
-    completarTodos,
-    eliminarTodos, 
-    loading,
-    error
-}) {
+export function TodoCard() {
+
+
+    const {
+        error,
+        loading,
+        todosFiltrados,
+        completarTodos,
+        eliminarTodos
+    } = React.useContext(TodoContext);
 
     return (
-        <Card sx={{ maxWidth: 500 }}>
+        <>
+            <Card sx={{ maxWidth: 500 }}>
 
-            <CardContent>
 
-                <TodoCounter
-                    completados={completados}
-                    total={total}
-                />
+                <CardContent>
+                    <TodoCounter />
+                    <br></br>
+                    <TodoSearch />
+                    <>
+                        <TodoList>
 
-                <br></br>
-                <>
-                    <TodoSearch
-                        searchValue={searchValue}
-                        setSearchValue={setSearchValue}
-                    />
+                            {error && <p>Hubo un error en el sistema...</p>}
+                            {loading && <p>Estamos cargando, espera por favor...</p>}
+                            {(!loading && todosFiltrados && !todosFiltrados.length) && <p>Crea tu primer tarea</p>}
 
-                    <TodoList>
-                        {error && <p>Estamos cargando, espera por favor...</p>}
-                        {loading && <p>Estamos cargando, espera por favor...</p>}
-                        {(!loading && !todos.length) && <p>Crea tu primer tarea</p>}
-                        
-
-                        {todos.map(({id, text, completed}) => {
-                            return <TodoItem   
-                                    key={id} 
-                                    text={text} 
+                            {todosFiltrados.map((
+                                { id,
+                                    text,
+                                    completed
+                                }) => {
+                                return <TodoItem
+                                    key={id}
+                                    text={text}
                                     completed={completed}
                                     completarTodos={completarTodos}
                                     eliminarTodos={eliminarTodos}
-                                    />
-                        })}
+                                />
+                            }) 
+                        }
 
-                    </TodoList>
-                </>
+                        </TodoList>
+                    </>
 
-            </CardContent>
+                </CardContent>
 
-            <CardActions>
-                <TodoCreateButton />
-            </CardActions>
+                <CardActions>
+                    <TodoCreateButton />
+                </CardActions>
+            </Card>
 
-        </Card>
+
+            <TodoModal/>
+        </>
     );
 }

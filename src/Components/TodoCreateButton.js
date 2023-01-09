@@ -1,11 +1,14 @@
 import React from 'react'
 import Button from '@mui/material/Button';
 import "./../Styles/TodoCreateButton.css"
+import { TodoContext } from './TodoContext';
 
 export const TodoCreateButton = () => {
 
+  const {setShowModal} = React.useContext(TodoContext)
+
   const onClickButton = () =>{
-    alert('Abrir modal')
+      setShowModal(true)
   }
 
   return (
