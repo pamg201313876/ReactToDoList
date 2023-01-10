@@ -2,7 +2,6 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Search from '@mui/icons-material/Search';
-import { TodoContext } from './TodoContext';
 
 
 export const TodoSearch = ({searchValue, setSearchValue} ) => {  

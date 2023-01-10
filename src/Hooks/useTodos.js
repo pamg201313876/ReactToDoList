@@ -1,9 +1,8 @@
 import React from 'react'
-import useLocalStorage from './../Hooks/useLocalStorage'
+import useLocalStorage from './useLocalStorage'
 
-const TodoContext = React.createContext();
 
-function TodoProvider(props) {
+function useTodos() {
 
     const [todos,
         saveTodos,
@@ -19,7 +18,7 @@ function TodoProvider(props) {
     let todosFiltrados = [];
 
     if (searchValue) {
-        todosFiltrados = todos.filter(todo => todo.text.toLowerCase().includes(searchValue.toLowerCase()));        
+        todosFiltrados = todos.filter(todo => todo.text.toLowerCase().includes(searchValue.toLowerCase()));
     } else {
         todosFiltrados = todos;
     }
@@ -47,30 +46,27 @@ function TodoProvider(props) {
 
     const agregarTodo = (todoText) => {
         const newTodos = [...todos]
-        newTodos.push({id: newTodos.length, text: todoText, completed: false});
+        newTodos.push({ id: newTodos.length, text: todoText, completed: false });
         saveTodos(newTodos);
     }
 
-    return (
-        <TodoContext.Provider value={{
-            error,
-            loading,
-            todosFiltrados,
-            searchValue,
-            setSearchValue,
-            completedTodos,
-            totalTodos,
-            completarTodos,
-            eliminarTodos,
-            agregarTodo,
-            showModal,
-            setShowModal
-        }}>
-            {props.children}
-        </TodoContext.Provider >
-    );
+    return {
+
+        error,
+        loading,
+        todosFiltrados,
+        searchValue,
+        setSearchValue,
+        completedTodos,
+        totalTodos,
+        completarTodos,
+        eliminarTodos,
+        agregarTodo,
+        showModal,
+        setShowModal
+    };
 }
 
 
 
-export { TodoContext, TodoProvider };
+export { useTodos };
