@@ -3,10 +3,8 @@ import Button from '@mui/material/Button';
 import "./../Styles/TodoCreateButton.css"
 import { TodoContext } from './TodoContext';
 
-export const TodoCreateButton = () => {
-
-  const {setShowModal} = React.useContext(TodoContext)
-
+export const TodoCreateButton = ({setShowModal}) => {
+  
   const onClickButton = () =>{
       setShowModal(true)
   }

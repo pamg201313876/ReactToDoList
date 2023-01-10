@@ -3,9 +3,6 @@ import * as React from 'react';
 import { TodoProvider } from './Components/TodoContext';
 
 function App() {
-
-
-
   return (
     <TodoProvider>
       <TodoCard />

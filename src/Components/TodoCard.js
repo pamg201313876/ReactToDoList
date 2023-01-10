@@ -19,7 +19,14 @@ export function TodoCard() {
         loading,
         todosFiltrados,
         completarTodos,
-        eliminarTodos
+        eliminarTodos,
+        totalTodos,
+        completedTodos,
+        searchValue, 
+        setSearchValue,
+        setShowModal,
+        agregarTodo,  
+        showModal
     } = React.useContext(TodoContext);
 
     return (
@@ -28,12 +35,11 @@ export function TodoCard() {
 
 
                 <CardContent>
-                    <TodoCounter />
+                    <TodoCounter totalTodos={totalTodos} completedTodos={completedTodos} />
                     <br></br>
-                    <TodoSearch />
+                    <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
                     <>
                         <TodoList>
-
                             {error && <p>Hubo un error en el sistema...</p>}
                             {loading && <p>Estamos cargando, espera por favor...</p>}
                             {(!loading && todosFiltrados && !todosFiltrados.length) && <p>Crea tu primer tarea</p>}
@@ -52,19 +58,18 @@ export function TodoCard() {
                                 />
                             }) 
                         }
-
                         </TodoList>
                     </>
 
                 </CardContent>
 
                 <CardActions>
-                    <TodoCreateButton />
+                    <TodoCreateButton setShowModal={setShowModal} />
                 </CardActions>
             </Card>
 
 
-            <TodoModal/>
+            <TodoModal agregarTodo={agregarTodo}  showModal={showModal} setShowModal={setShowModal} />
         </>
     );
 }

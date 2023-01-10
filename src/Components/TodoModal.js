@@ -11,9 +11,7 @@ import { TodoContext } from './TodoContext';
 
 
 
-function TodoModal() {
-
-    const { agregarTodo,  showModal, setShowModal } = React.useContext(TodoContext);
+function TodoModal({agregarTodo,  showModal, setShowModal}) {
     
     const [texto, setTexto] = React.useState("");
 
