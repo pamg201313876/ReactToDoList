@@ -66,7 +66,7 @@ function App() {
                                     key={id}
                                     text={text}
                                     completed={completed}
-                                    onComplete={() => completarTodos(text)}
+                                    completarTodos={() => completarTodos(text)}
                                     eliminarTodos={() => eliminarTodos(text)}
                                 />
                             )}
