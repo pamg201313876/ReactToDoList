@@ -1,11 +1,39 @@
+import { render } from '@testing-library/react'
 import React from 'react'
 
-export const TodoList = (props) => {
+export const TodoList = ({
+  error,
+  loading,
+  todosFiltrados,
+  onError,
+  onLoading,
+  onEmptyTodos,
+  render,
+  onEmptySearchResults,
+  totalTodos,
+  children
+}) => {
+
+
+
+
+
+
   return (
     <>
-      <ul>
-      {props.children}
-      </ul>
+      {error && onError()}
+
+      {loading && onLoading()}
+
+      {(!loading && todosFiltrados && !todosFiltrados.length && !totalTodos) && onEmptyTodos()}
+
+      {(totalTodos > 0 && todosFiltrados?.length == 0) ?
+        onEmptySearchResults()
+        :
+        render ?
+          todosFiltrados.map((todo) => render(todo))
+          : children
+      }
     </>
 
   )
