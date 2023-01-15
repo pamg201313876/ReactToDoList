@@ -1,11 +1,72 @@
 import * as React from 'react';
 
+
+const initialState = ({ initialValue }) => ({
+    sincronizedItem: true,
+    loading: true,
+    error: false,
+    item: initialValue,
+});
+
+const actionTypes = {
+    error: 'ERROR',
+    received: 'RECEIVED',
+    saved: 'SAVED',
+    sincronize: 'SINCRONIZED'
+}
+
+
+const reducer = (state = initialState, { type, payload }) => {
+    switch (type) {
+
+        case actionTypes.error:
+            return { ...state, error: true }
+
+        case actionTypes.received:
+            return { ...state, error: false, loading: false, sincronizeItem: true, item: payload }
+
+        case actionTypes.saved:
+            return { ...state, item: payload }
+
+        case actionTypes.sincronize:
+            return { ...state, sincronizeItem: false, loading: true }
+
+        default:
+            return state
+    }
+}
+
+
 export default function useLocalStorage(itenName, initialValue) {
 
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(false);
-    const [item, setItem] = React.useState(initialValue);
-    const [sincronizeItem, setSincronizeItem] = React.useState(true);
+
+    const [state, dispatch] = React.useReducer(reducer, initialState({ initialValue }))
+
+
+    const {
+        loading,
+        error,
+        item,
+        sincronizeItem
+    } = state;
+
+    //ACTION CREATORS
+
+    const onError = (error) => {
+        dispatch({ type: actionTypes.error, payload: error })
+    }
+
+    const onReceived = (parsedTodos) => {
+        dispatch({ type: actionTypes.received, payload: parsedTodos })
+    }
+
+    const onSave = (parsedTodos) => {
+        dispatch({ type: actionTypes.saved, payload: parsedTodos })
+    }
+
+    const onSincronize = () => {
+        dispatch({ type: actionTypes.sincronize })
+    }
 
     React.useEffect(() => {
 
@@ -24,37 +85,35 @@ export default function useLocalStorage(itenName, initialValue) {
                     parsedTodos = JSON.parse(localStorageTodos);
                 }
 
-                setItem(parsedTodos);
-                setLoading(false);
-                setSincronizeItem(true)
+                onReceived(parsedTodos)
+
             }, 1000);
 
-        } catch (error){
-            setError(true)
+        } catch (error) {
+            onError(error)
         }
 
     }, [sincronizeItem]);
 
 
     const saveItem = (newItem) => {
-        
-        try{
+
+        try {
             const stringifiedTodos = JSON.stringify(newItem);
             localStorage.setItem(itenName, stringifiedTodos);
-            setItem(newItem);
-        }catch(error){
-            setError(true)
+            onSave(newItem)
+        } catch (error) {
+            onError(error)
         }
 
     }
 
 
     const sincronize = () => {
-        setLoading(true);
-        setSincronizeItem(false)
+        onSincronize()
     }
 
     return [item, saveItem, loading, error, sincronize]
-    ;
+        ;
 
 }
