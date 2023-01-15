@@ -27,7 +27,7 @@ export const TodoList = ({
 
       {(!loading && todosFiltrados && !todosFiltrados.length && !totalTodos) && onEmptyTodos()}
 
-      {(totalTodos > 0 && todosFiltrados?.length == 0) ?
+      {( (totalTodos > 0 && todosFiltrados?.length == 0) || loading) ?
         onEmptySearchResults()
         :
         render ?

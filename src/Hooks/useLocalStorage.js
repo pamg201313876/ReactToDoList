@@ -5,6 +5,7 @@ export default function useLocalStorage(itenName, initialValue) {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(false);
     const [item, setItem] = React.useState(initialValue);
+    const [sincronizeItem, setSincronizeItem] = React.useState(true);
 
     React.useEffect(() => {
 
@@ -25,13 +26,14 @@ export default function useLocalStorage(itenName, initialValue) {
 
                 setItem(parsedTodos);
                 setLoading(false);
+                setSincronizeItem(true)
             }, 1000);
 
         } catch (error){
             setError(true)
         }
 
-    }, []);
+    }, [sincronizeItem]);
 
 
     const saveItem = (newItem) => {
@@ -46,7 +48,13 @@ export default function useLocalStorage(itenName, initialValue) {
 
     }
 
-    return [item, saveItem, loading, error]
+
+    const sincronize = () => {
+        setLoading(true);
+        setSincronizeItem(false)
+    }
+
+    return [item, saveItem, loading, error, sincronize]
     ;
 
 }

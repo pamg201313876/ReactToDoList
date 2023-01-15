@@ -4,7 +4,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Search from '@mui/icons-material/Search';
 
 
-export const TodoSearch = ({searchValue, setSearchValue} ) => {  
+export const TodoSearch = ({searchValue, setSearchValue, loading} ) => {  
   
   const onSearchValueChange = (event) => {    
     setSearchValue(event.target.value)
@@ -17,7 +17,8 @@ export const TodoSearch = ({searchValue, setSearchValue} ) => {
         onChange={onSearchValueChange}
         fullWidth
         value={searchValue}
-        placeholder='Ingresa lo que deseas buscar'
+        disabled={loading}
+        placeholder= {loading? 'Por favor espere...' : 'Ingresa lo que deseas buscar'}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

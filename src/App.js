@@ -13,6 +13,7 @@ import { TodoError } from './Components/TodoError';
 import { TodoEmpty } from './Components/TodoEmpty';
 import { TodoEmptySearchResults } from './Components/TodoEmptySearchResults';
 import { TodoLoading } from './Components/TodoLoading';
+import { ChangeAlert } from './Components/ChangeAlert';
 
 
 function App() {
@@ -28,7 +29,8 @@ function App() {
         setSearchValue,
         setShowModal,
         agregarTodo,
-        showModal
+        showModal,
+        sincronize
     } = useTodos();
 
     return (
@@ -40,6 +42,7 @@ function App() {
                     <TodoCounter
                         totalTodos={totalTodos}
                         completedTodos={completedTodos}
+                        loading={loading}
                     />
 
                     <br></br>
@@ -47,6 +50,7 @@ function App() {
                     <TodoSearch
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
+                        loading={loading}
                     />
 
                     <>
@@ -60,7 +64,8 @@ function App() {
                             onError={() => <TodoError />}
                             onLoading={() => <TodoLoading />}
                             onEmptyTodos={() => <TodoEmpty />}
-                            onEmptySearchResults={() => <TodoEmptySearchResults />}                            
+                            onEmptySearchResults={() => <TodoEmptySearchResults />}      
+                                                  
                             render={({ id, text, completed }) => (
                                 <TodoItem
                                     key={id}
@@ -107,6 +112,10 @@ function App() {
                 showModal={showModal}
                 setShowModal={setShowModal}
             />
+
+            <ChangeAlert sincronizeFunction={sincronize}/>
+
+
         </>
     );
 }
