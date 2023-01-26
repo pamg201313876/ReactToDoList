@@ -30,7 +30,7 @@ export const TodoList = ({
       {( (totalTodos > 0 && todosFiltrados?.length == 0) ) ?
         onEmptySearchResults()
         :
-        render ?
+        render &&  todosFiltrados?
           todosFiltrados.map((todo) => render(todo))
           : children
       }
