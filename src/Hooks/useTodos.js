@@ -11,10 +11,12 @@ function useTodos() {
         sincronize 
     ] = useLocalStorage('TODOS_V1', []);
 
+    console.log(todos)
+
     const [searchValue, setSearchValue] = React.useState('');
-    const completedTodos = todos ? todos.filter(todo => todo.completed).length : 0;
+    const completedTodos = todos.filter(todo => todo.completed).length;
     const [showModal, setShowModal] = React.useState(false);
-    const totalTodos = todos ? todos.length : 0;
+    const totalTodos = todos.length;
 
     let todosFiltrados = [];
 
