@@ -14,6 +14,7 @@ import { TodoEmpty } from './Components/TodoEmpty';
 import { TodoEmptySearchResults } from './Components/TodoEmptySearchResults';
 import { TodoLoading } from './Components/TodoLoading';
 import { ChangeAlert } from './Components/ChangeAlert';
+import "./Styles/main.css"
 
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
 
     return (
         <>
-            <Card sx={{ maxWidth: 500 }}>
+            <Card className='main-div'>
 
 
                 <CardContent>
@@ -51,6 +52,8 @@ function App() {
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
                         loading={loading}
+                        totalTodos={totalTodos}
+
                     />
 
                     <>
@@ -64,7 +67,7 @@ function App() {
                             onError={() => <TodoError />}
                             onLoading={() => <TodoLoading />}
                             onEmptyTodos={() => <TodoEmpty />}
-                            onEmptySearchResults={() => <TodoEmptySearchResults />}      
+                            onEmptySearchResults={() => <TodoEmptySearchResults busqueda={searchValue}/>}      
                                                   
                             render={({ id, text, completed }) => (
                                 <TodoItem

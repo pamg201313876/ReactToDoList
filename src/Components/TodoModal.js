@@ -28,7 +28,14 @@ function TodoModal({agregarTodo,  showModal, setShowModal}) {
     }
 
     return (
-        <Modal open={showModal}>
+        <Modal 
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+         open={showModal}         
+         >
             <Card sx={{ maxWidth: 300 }}>
 
                 <CardContent>
