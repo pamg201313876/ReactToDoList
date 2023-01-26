@@ -12,9 +12,9 @@ function useTodos() {
     ] = useLocalStorage('TODOS_V1', []);
 
     const [searchValue, setSearchValue] = React.useState('');
-    const completedTodos = todos? todos.filter(todo => todo.completed).length : 0;
+    const completedTodos = todos ? todos.filter(todo => todo.completed).length : 0;
     const [showModal, setShowModal] = React.useState(false);
-    const totalTodos = todos.length;
+    const totalTodos = todos ? todos.length : 0;
 
     let todosFiltrados = [];
 
