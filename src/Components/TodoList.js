@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
 import React from 'react'
 
+
 export const TodoList = ({
   error,
   loading,
@@ -19,6 +20,7 @@ export const TodoList = ({
 
 
 
+
   return (
     <>
       {error && onError()}
@@ -27,7 +29,7 @@ export const TodoList = ({
 
       {(!loading && todosFiltrados && !todosFiltrados.length && !totalTodos) && onEmptyTodos()}
 
-      {( (totalTodos > 0 && todosFiltrados?.length == 0) ) ?
+      {((totalTodos > 0 && todosFiltrados?.length == 0)) ?
         onEmptySearchResults()
         :
         render ?

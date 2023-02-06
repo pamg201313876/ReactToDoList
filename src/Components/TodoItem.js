@@ -6,22 +6,31 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Delete from '@mui/icons-material/Delete';
+import Edit from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom'
 
 
 export const TodoItem = ({
-  id, 
-  text, 
-  completarTodos, 
-  completed, 
+  todo,
+  completarTodos,
   eliminarTodos
 }) => {
 
+
+  const { id, text, completed } = todo;
+
+  const navigate = useNavigate();
+
   const onComplete = () => {
-    completarTodos(text)
+    completarTodos(id)
   }
 
   const onDelete = () => {
-    eliminarTodos(text)
+    eliminarTodos(id)
+  }
+
+  const onEdit = () => {    
+    navigate('/edit/' + id)
   }
 
   return (
@@ -29,9 +38,15 @@ export const TodoItem = ({
       key={id}
       disablePadding
       secondaryAction={
-        <IconButton onClick={onDelete} edge="end" aria-label="comments">
-          <Delete />
-        </IconButton>
+        <>
+          <IconButton onClick={onDelete} edge="end" aria-label="comments">
+            <Delete />
+          </IconButton>
+
+          <IconButton onClick={onEdit} edge="end" aria-label="comments">
+            <Edit />
+          </IconButton>
+        </>
       }
     >
       <ListItemButton dense>

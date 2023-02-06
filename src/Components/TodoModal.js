@@ -6,53 +6,90 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import "./../Styles/TodoCreateButton.css"
+import { useTodos } from './../Hooks/useTodos';
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import useLocalStorage from './../Hooks/useLocalStorage'
 
 
 
-function TodoModal({agregarTodo,  showModal, setShowModal}) {
-    
+function TodoModal() {
+
+    const [todos] = useLocalStorage('TODOS_V1', []);      
+
+    const { agregarTodo, editarTodos } = useTodos();
+
     const [texto, setTexto] = React.useState("");
+    const [id, setId] = React.useState("");
 
-    const cerrarModal = () => {
-        setShowModal(false)
-        setTexto("")
-    }
+    const navigation = useNavigate();
+    const { slug } = useParams();
+    const location = useLocation();
+    const isEdit = location.pathname.startsWith('/edit');
+
+
+
+    React.useEffect(() => {
+
+        var currentTodo = null;
+
+        if (isEdit) {
+
+            currentTodo = (todos.find(todo => todo.id === parseInt(slug)))
+
+            if (currentTodo) {
+                console.log(currentTodo)
+                setTexto(currentTodo.text)
+                setId(currentTodo.id)
+            }
+        }
+
+
+    }, [todos])
+
+
+
 
     const onTextChange = (event) => {
         setTexto(event.target.value)
     }
 
     const guardar = () => {
-        agregarTodo(texto)       
-        cerrarModal()
+        agregarTodo(texto)
+        navigation("/")
+    }
+
+    const editar = () => {
+        editarTodos(id, texto)
+        navigation("/")
     }
 
     return (
-        <Modal 
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-         open={showModal}         
-         >
-            <Card sx={{ maxWidth: 300 }}>
+        <Card sx={{ maxWidth: "full", maxHeight: "full", minHeight: 350 }}>
 
-                <CardContent>
-                    <h2>Crear nueva Tarea</h2>
-                    <TextField onChange={ onTextChange } value={texto} fullWidth multiline placeholder='Ingresa el contenido de tu tarea' />
-                </CardContent>
+            <CardContent sx={{ maxWidth: "full", maxHeight: "full" }}>
+                <center> <h2>Crear nueva Tarea</h2></center>
+                <TextField
+                    onChange={onTextChange}
+                    value={texto}
+                    multiline
+                    rows={4}
+                    fullWidth
+                    placeholder='Ingresa el contenido de tu tarea'
+                />
+            </CardContent>
 
-                <CardActions>
-                    <div className='TodoCreateButton'>
-                        <Button onClick={cerrarModal} variant="contained" color="secondary" >Cancelar</Button>
-                        <br />
+            <CardActions>
+                <div className='TodoCreateButton'>
+                    <Button onClick={() => navigation("/")} variant="contained" color="secondary" >Cancelar</Button>
+                    <br />
+                    {isEdit ?
+                        <Button onClick={editar} variant="contained" color="primary" >Editar</Button>
+                        :
                         <Button onClick={guardar} variant="contained" color="primary" >Guardar</Button>
-                    </div>
-                </CardActions>
-            </Card>
-
-        </Modal>
+                    }
+                </div>
+            </CardActions>
+        </Card>
     )
 }
 

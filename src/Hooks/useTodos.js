@@ -2,16 +2,15 @@ import React from 'react'
 import useLocalStorage from './useLocalStorage'
 
 
+
 function useTodos() {
 
     const [todos,
         saveTodos,
         loading,
         error,
-        sincronize 
+        sincronize
     ] = useLocalStorage('TODOS_V1', []);
-
-    console.log(todos)
 
     const [searchValue, setSearchValue] = React.useState('');
     const completedTodos = todos.filter(todo => todo.completed).length;
@@ -27,21 +26,25 @@ function useTodos() {
     }
 
     const eliminarTodos = (todoText) => {
-        //const newTodos = todos.filter(todo => todo.text !== todoText);
-        const todoIndex = todos.findIndex(todo => todo.text === todoText);
+        const todoIndex = todos.findIndex(todo => todo.id === todoText);
         const newTodos = [...todos];
         newTodos.splice(todoIndex, 1)
         saveTodos(newTodos);
     }
 
-    const completarTodos = (todoText) => {
-        // const newTodos = todos.map((todo) => {
-        //   if (todo.text === todoText) {
-        //     return { ...todo, completed: !todo.completed }
-        //   }
-        //   return todo;
-        // })
-        const index = todos.findIndex(todo => todo.text === todoText);
+    const editarTodos = (todoId, todoText) => {
+        const todoIndex = todos.findIndex(todo => todo.id === todoId);
+        var todoEdit = todos.find( (todo) =>todo.id === todoId);
+        console.log("todoedites " +todoEdit)
+        todoEdit.text = todoText;        
+        const newTodos = [...todos];
+        newTodos.splice(todoIndex, 1, todoEdit)
+        console.log(newTodos)
+        saveTodos(newTodos);
+    }
+
+    const completarTodos = (todoText) => {        
+        const index = todos.findIndex(todo => todo.id === todoText);
         const newTodos = [...todos]
         newTodos[index].completed = !newTodos[index].completed;
         saveTodos(newTodos);
@@ -54,7 +57,6 @@ function useTodos() {
     }
 
     return {
-
         error,
         loading,
         todosFiltrados,
@@ -67,7 +69,8 @@ function useTodos() {
         agregarTodo,
         showModal,
         setShowModal,
-        sincronize
+        sincronize,
+        editarTodos
     };
 }
 
