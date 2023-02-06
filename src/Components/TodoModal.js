@@ -9,14 +9,22 @@ import "./../Styles/TodoCreateButton.css"
 import { useTodos } from './../Hooks/useTodos';
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import useLocalStorage from './../Hooks/useLocalStorage'
+import { TodoError } from './TodoError';
+import { TodoLoading } from './TodoLoading';
 
 
 
 function TodoModal() {
 
-    const [todos] = useLocalStorage('TODOS_V1', []);      
+    //const [todos] = useLocalStorage('TODOS_V1', []);
 
-    const { agregarTodo, editarTodos } = useTodos();
+    const {
+        agregarTodo,
+        editarTodos,
+        error,
+        loading,
+        todosFiltrados
+    } = useTodos();
 
     const [texto, setTexto] = React.useState("");
     const [id, setId] = React.useState("");
@@ -34,7 +42,7 @@ function TodoModal() {
 
         if (isEdit) {
 
-            currentTodo = (todos.find(todo => todo.id === parseInt(slug)))
+            currentTodo = (todosFiltrados.find(todo => todo.id === parseInt(slug)))
 
             if (currentTodo) {
                 console.log(currentTodo)
@@ -44,7 +52,7 @@ function TodoModal() {
         }
 
 
-    }, [todos])
+    }, [todosFiltrados])
 
 
 
@@ -63,33 +71,55 @@ function TodoModal() {
         navigation("/")
     }
 
+    const onError = () => {
+        return <TodoError />
+    }
+
+    const onLoading = () => {
+        return <TodoLoading />
+    }
+
+
     return (
-        <Card sx={{ maxWidth: "full", maxHeight: "full", minHeight: 350 }}>
 
-            <CardContent sx={{ maxWidth: "full", maxHeight: "full" }}>
-                <center> <h2>Crear nueva Tarea</h2></center>
-                <TextField
-                    onChange={onTextChange}
-                    value={texto}
-                    multiline
-                    rows={4}
-                    fullWidth
-                    placeholder='Ingresa el contenido de tu tarea'
-                />
-            </CardContent>
+        <>
+            <Card sx={{ maxWidth: "full", maxHeight: "full", minHeight: 350 }}>
 
-            <CardActions>
-                <div className='TodoCreateButton'>
-                    <Button onClick={() => navigation("/")} variant="contained" color="secondary" >Cancelar</Button>
-                    <br />
-                    {isEdit ?
-                        <Button onClick={editar} variant="contained" color="primary" >Editar</Button>
-                        :
-                        <Button onClick={guardar} variant="contained" color="primary" >Guardar</Button>
-                    }
-                </div>
-            </CardActions>
-        </Card>
+                <CardContent sx={{ maxWidth: "full", maxHeight: "full" }}>
+
+                    <center> <h2>Crear nueva Tarea</h2></center>
+
+                    {error && onError()}
+
+                    {loading && onLoading()}
+
+                    <TextField
+                        onChange={onTextChange}
+                        disabled={loading}
+                        value={texto}
+                        multiline
+                        rows={4}
+                        fullWidth
+                        placeholder='Ingresa el contenido de tu tarea'
+                    />
+
+                </CardContent>
+
+                <CardActions>
+                    <div className='TodoCreateButton'>
+                        <Button onClick={() => navigation("/")} variant="contained" color="secondary" >Cancelar</Button>
+                        <br />
+                        {isEdit ?
+                            <Button disabled={loading} onClick={editar} variant="contained" color="primary" >Editar</Button>
+                            :
+                            <Button disabled={loading} onClick={guardar} variant="contained" color="primary" >Guardar</Button>
+                        }
+                    </div>
+                </CardActions>
+            </Card>
+
+        </>
+
     )
 }
 
